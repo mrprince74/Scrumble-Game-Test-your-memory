@@ -9,6 +9,14 @@ Memory Scrumble is a fun, customizable, browser-based memory matching game. Test
 - **Interactive UI:** Features a clean, modern, and colorful flat design with smooth card-flipping hover animations.
 - **Audio & Visual Effects:** Enjoy sound effects and a celebratory visual rain/confetti effect upon winning.
 
+## Screenshots
+
+ <img src = "screenshots/SC1.png">
+ <img src = "screenshots/SC2.png">
+ <img src = "screenshots/SC3.png">
+ <img src = "screenshots/SC4.png">
+ <img src = "screenshots/SC5.png">
+
 ## How to Run
 
 This is a purely front-end project built entirely with HTML, CSS, and Vanilla JavaScript. There are no complex dependencies or build steps required.
