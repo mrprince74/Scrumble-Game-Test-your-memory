@@ -11,11 +11,11 @@ Memory Scrumble is a fun, customizable, browser-based memory matching game. Test
 
 ## Screenshots
 
- <img src = "screenshots/SC1.png">
- <img src = "screenshots/SC2.png">
- <img src = "screenshots/SC3.png">
- <img src = "screenshots/SC4.png">
- <img src = "screenshots/SC5.png">
+ <img src = "Screenshots/SC1.png">
+ <img src = "Screenshots/SC2.png">
+ <img src = "Screenshots/SC3.png">
+ <img src = "Screenshots/SC4.png">
+ <img src = "Screenshots/SC5.png">
 
 ## How to Run
 
