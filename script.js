@@ -54,6 +54,7 @@ const MAX_GRID_SIZE = ALL_ITEMS.length * 2;
 let clickedItems = [];
 let remainingItems = null;
 let rainInterval = null;
+let timeLimitInterval = null;
 let remainingSeconds = null;
 let hasWon = false;
 
@@ -84,10 +85,12 @@ const buildGrid = (n_rows, n_cols) => {
 };
 const resetGame = () => {
     clearInterval(rainInterval);
+    clearInterval(timeLimitInterval);
     rainInterval = null;
+    timeLimitInterval = null;
     document.getElementById("rain").innerHTML = "";
+    document.getElementById("remaining_time").style.display = "none";
     remainingItems = null;
-    rainInterval = null;
     remainingSeconds = null;
     hasWon = false;
 };
@@ -120,12 +123,14 @@ const handleWin = () => {
 
 const handleClickItem = (item, grid) => {
     // Flip down
-    if (item.textContent != "#") {
-        item.textContent = "#";
+    if (!item.classList.contains("facedown")) {
+        item.classList.add("facedown");
+        item.textContent = "";
         clickedItems.pop();
         return;
     }
     // Flip up
+    item.classList.remove("facedown");
     item.textContent = grid[Number(item.id)];
     clickedItems.push(item);
     if (clickedItems.length != 2) return;
@@ -133,13 +138,17 @@ const handleClickItem = (item, grid) => {
     let elem2 = clickedItems.pop();
     if (elem1.textContent != elem2.textContent) {
         setTimeout(() => {
-            elem1.textContent = "#";
-            elem2.textContent = "#";
+            elem1.classList.add("facedown");
+            elem1.textContent = "";
+            elem2.classList.add("facedown");
+            elem2.textContent = "";
         }, 750);
         return;
     }
     elem1.style.pointerEvents = "none";
     elem2.style.pointerEvents = "none";
+    elem1.classList.add("matched");
+    elem2.classList.add("matched");
     remainingItems -= 2;
 
     if (remainingItems == 0) {
@@ -156,9 +165,9 @@ const drawGrid = (grid, n_rows, n_cols) => {
 
     grid.map((val, idx) => {
         let item = document.createElement("div");
-        item.className = "grid-item";
+        item.className = "grid-item facedown";
         item.id = `${idx}`;
-        item.textContent = "#";
+        item.textContent = "";
         item.style.fontSize = `min(${30 / n_cols}vw, ${30 / n_rows}vh)`;
         item.addEventListener("click", () => {
             handleClickItem(item, grid);
@@ -174,18 +183,18 @@ const handleLose = () => {
 };
 
 const handleTimeLimit = () => {
-    document.getElementById("remaining_time").innerText =
-        `Time Remaining: ${remainingSeconds}s`;
+    const remainingTimeElem = document.getElementById("remaining_time");
+    remainingTimeElem.style.display = "flex";
+    remainingTimeElem.innerText = `Time Remaining: ${remainingSeconds}s`;
 
-    let timeLimitInterval = setInterval(() => {
+    timeLimitInterval = setInterval(() => {
         remainingSeconds--;
-        document.getElementById("remaining_time").innerText =
-            `Time Remaining: ${remainingSeconds}s`;
+        remainingTimeElem.innerText = `Time Remaining: ${remainingSeconds}s`;
         if (hasWon) {
             clearInterval(timeLimitInterval);
             return;
         }
-        if (remainingSeconds == 0) {
+        if (remainingSeconds <= 0) {
             handleLose();
             clearInterval(timeLimitInterval);
             return;
