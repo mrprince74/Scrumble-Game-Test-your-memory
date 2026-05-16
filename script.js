@@ -54,7 +54,7 @@ const MAX_GRID_SIZE = ALL_ITEMS.length * 2;
 let clickedItems = [];
 let remainingItems = null;
 let rainInterval = null;
-letRemainingSeconds = null;
+let remainingSeconds = null;
 let hasWon = false;
 
 const shuffle = (array) => {
@@ -88,7 +88,7 @@ const resetGame = () => {
     document.getElementById("rain").innerHTML = "";
     remainingItems = null;
     rainInterval = null;
-    RemainingSeconds = null;
+    remainingSeconds = null;
     hasWon = false;
 };
 
@@ -111,6 +111,7 @@ const handleWin = () => {
         setTimeout(() => drop.remove(), (dur + 0.2) * 1000);
     }
     rainInterval = setInterval(spawnDrop, 20);
+    alert("Congratulations. You Won !");
 };
 
 const handleClickItem = (item, grid) => {
@@ -165,6 +166,7 @@ const handleLose = () => {
     const audio = new Audio("audio/lose_sound_effect.mp3");
     audio.play();
     alert("Game Over. You lost");
+    window.location.reload();
 };
 
 const handleTimeLimit = () => {
@@ -190,15 +192,15 @@ const handleTimeLimit = () => {
 document.querySelector("form").addEventListener("submit", function(event) {
     event.preventDefault();
     resetGame();
-    let n_rows = document.getElementById("n_rows").value;
-    let n_cols = document.getElementById("n_cols").value;
+    let n_rows = Number(document.getElementById("n_rows").value);
+    let n_cols = Number(document.getElementById("n_cols").value);
     let gridSize = n_cols * n_rows;
     if (gridSize & 1) {
         alert("Grid Size must be even");
         return;
     }
     if (gridSize > MAX_GRID_SIZE) {
-        alert(`Grid Size cannot be larger than ${MAX_ITEMS}`);
+        alert(`Grid Size cannot be larger than ${MAX_GRID_SIZE}`);
         return;
     }
     remainingItems = gridSize;
