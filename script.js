@@ -51,6 +51,7 @@ const ALL_ITEMS = [
     "🐬",
 ];
 const MAX_GRID_SIZE = ALL_ITEMS.length * 2;
+let clickedItems = [];
 
 const shuffle = (array) => {
     let currentIndex = array.length;
@@ -70,24 +71,36 @@ const buildGrid = (n_rows, n_cols) => {
     // shuffle first to ensure complete randomness
     shuffle(ALL_ITEMS);
     let grid_size = n_rows * n_cols;
-    // take only the first, and duplicate it
-    let curItems = ALL_ITEMS.slice(0, Math.floor(grid_size / 2));
-    curItems = curItems.concat(curItems);
-    shuffle(curItems);
-
-    let grid = Array.from({ length: Number(n_rows) }, () =>
-        Array(Number(n_cols)).fill("x"),
-    );
-    curItems.map((val, idx) => {
-        let rowIdx = Math.floor(idx / n_cols);
-        let colIdx = idx % n_cols;
-        grid[rowIdx][colIdx] = val;
-    });
+    // take only half the grid size, and duplicate them
+    let grid = ALL_ITEMS.slice(0, Math.floor(grid_size / 2));
+    grid = grid.concat(grid);
+    shuffle(grid);
 
     return grid;
 };
-const drawGrid = (grid) => {
+const clickItem = (item, grid) => {
     // TODO
+};
+
+const drawGrid = (grid, n_rows, n_cols) => {
+    console.log(grid);
+    const gridElem = document.getElementById("grid");
+    gridElem.innerHTML = "";
+    gridElem.style.gridTemplateRows = `repeat(${n_rows}, 1fr)`;
+    gridElem.style.gridTemplateColumns = `repeat(${n_cols}, 1fr)`;
+
+    grid.map((val, idx) => {
+        let item = document.createElement("div");
+        item.className = "grid-item";
+        item.id = `${idx + 1}`;
+        item.textContent = "#";
+        item.style.fontSize = `min(${30 / n_cols}vw, ${30 / n_rows}vh)`;
+        item.addEventListener("click", () => {
+            alert("TODO!");
+            handleClickItem(item, grid);
+        });
+        gridElem.appendChild(item);
+    });
 };
 
 document.querySelector("form").addEventListener("submit", function(event) {
@@ -103,5 +116,5 @@ document.querySelector("form").addEventListener("submit", function(event) {
         return;
     }
     let grid = buildGrid(n_rows, n_cols);
-    drawGrid();
+    drawGrid(grid, n_rows, n_cols);
 });
