@@ -111,7 +111,11 @@ const handleWin = () => {
         setTimeout(() => drop.remove(), (dur + 0.2) * 1000);
     }
     rainInterval = setInterval(spawnDrop, 20);
-    alert("Congratulations. You Won !");
+
+    // Show modal after a short delay so the rain is enjoyed first
+    setTimeout(() => {
+        document.getElementById("win-modal").style.display = "flex";
+    }, 2000);
 };
 
 const handleClickItem = (item, grid) => {
@@ -165,8 +169,8 @@ const drawGrid = (grid, n_rows, n_cols) => {
 const handleLose = () => {
     const audio = new Audio("audio/lose_sound_effect.mp3");
     audio.play();
-    alert("Game Over. You lost");
-    window.location.reload();
+    const modal = document.getElementById("game-over-modal");
+    modal.style.display = "flex";
 };
 
 const handleTimeLimit = () => {
