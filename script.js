@@ -52,6 +52,8 @@ const ALL_ITEMS = [
 ];
 const MAX_GRID_SIZE = ALL_ITEMS.length * 2;
 let clickedItems = [];
+let remainingItems = null;
+let rainInterval = null;
 
 const shuffle = (array) => {
     let currentIndex = array.length;
@@ -78,8 +80,59 @@ const buildGrid = (n_rows, n_cols) => {
 
     return grid;
 };
-const clickItem = (item, grid) => {
-    // TODO
+const resetGame = () => {
+    clearInterval(rainInterval);
+    rainInterval = null;
+    document.getElementById("rain").innerHTML = "";
+};
+
+const handleWin = () => {
+    const container = document.getElementById("rain");
+    const audio = new Audio("audio/victory_sound_effect.mp3");
+    audio.play();
+
+    function spawnDrop() {
+        const drop = document.createElement("div");
+        drop.className = "drop";
+        drop.style.left = Math.random() * 110 - 5 + "vw";
+        const dur = Math.random() * 1.2 + 0.7;
+        const h = Math.random() * 22 + 12;
+        drop.style.animationDuration = dur + "s";
+        drop.style.height = h + "px";
+        drop.style.opacity = String(Math.random() * 0.5 + 0.5);
+        drop.style.filter = "blur(" + Math.random().toFixed(1) + "px)";
+        container.appendChild(drop);
+        setTimeout(() => drop.remove(), (dur + 0.2) * 1000);
+    }
+    rainInterval = setInterval(spawnDrop, 20);
+};
+
+const handleClickItem = (item, grid) => {
+    // Flip down
+    if (item.textContent != "#") {
+        item.textContent = "#";
+        clickedItems.pop();
+        return;
+    }
+    // Flip up
+    item.textContent = grid[Number(item.id)];
+    clickedItems.push(item);
+    if (clickedItems.length != 2) return;
+    let elem1 = clickedItems.pop();
+    let elem2 = clickedItems.pop();
+    if (elem1.textContent != elem2.textContent) {
+        setTimeout(() => {
+            elem1.textContent = "#";
+            elem2.textContent = "#";
+        }, 1000);
+        return;
+    }
+    elem1.style.pointerEvents = "none";
+    elem2.style.pointerEvents = "none";
+    remainingItems -= 2;
+    if (remainingItems == 0) {
+        handleWin();
+    }
 };
 
 const drawGrid = (grid, n_rows, n_cols) => {
@@ -92,11 +145,10 @@ const drawGrid = (grid, n_rows, n_cols) => {
     grid.map((val, idx) => {
         let item = document.createElement("div");
         item.className = "grid-item";
-        item.id = `${idx + 1}`;
+        item.id = `${idx}`;
         item.textContent = "#";
         item.style.fontSize = `min(${30 / n_cols}vw, ${30 / n_rows}vh)`;
         item.addEventListener("click", () => {
-            alert("TODO!");
             handleClickItem(item, grid);
         });
         gridElem.appendChild(item);
@@ -105,16 +157,19 @@ const drawGrid = (grid, n_rows, n_cols) => {
 
 document.querySelector("form").addEventListener("submit", function(event) {
     event.preventDefault();
+    resetGame();
     let n_rows = document.getElementById("n_rows").value;
     let n_cols = document.getElementById("n_cols").value;
-    if ((n_cols * n_rows) & 1) {
+    let gridSize = n_cols * n_rows;
+    if (gridSize & 1) {
         alert("Grid Size must be even");
         return;
     }
-    if (n_cols * n_rows > MAX_GRID_SIZE) {
+    if (gridSize > MAX_GRID_SIZE) {
         alert(`Grid Size cannot be larger than ${MAX_ITEMS}`);
         return;
     }
+    remainingItems = gridSize;
     let grid = buildGrid(n_rows, n_cols);
     drawGrid(grid, n_rows, n_cols);
 });

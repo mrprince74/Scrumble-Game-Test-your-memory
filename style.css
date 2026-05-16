@@ -70,3 +70,32 @@ h3 {
     padding: 5px;
     user-select: none;
 }
+
+
+/* Styling for raining sparkels */
+
+.rain-container {
+    position: absolute;
+}
+
+.drop {
+    position: absolute;
+    width: 5px;
+    background: linear-gradient(to bottom, transparent, #ffd700, transparent);
+    border-radius: 5px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-60px) rotate(12deg);
+        opacity: 1;
+    }
+    80% {
+        opacity: 0.9;
+    }
+    100% {
+        transform: translateY(105vh) rotate(12deg);
+        opacity: 0.8;
+    }
+}
