@@ -1,0 +1,42 @@
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    height: 500px;
+}
+
+.sidebar {
+    width: max-content;
+    height: inherit;
+    border: 2px black solid;
+    margin: 10px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-content {
+    flex: 1
+}
+
+h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
+h3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    /* border: 2px solid black; */
+}
