@@ -54,6 +54,8 @@ const MAX_GRID_SIZE = ALL_ITEMS.length * 2;
 let clickedItems = [];
 let remainingItems = null;
 let rainInterval = null;
+letRemainingSeconds = null;
+let hasWon = false;
 
 const shuffle = (array) => {
     let currentIndex = array.length;
@@ -84,6 +86,10 @@ const resetGame = () => {
     clearInterval(rainInterval);
     rainInterval = null;
     document.getElementById("rain").innerHTML = "";
+    remainingItems = null;
+    rainInterval = null;
+    RemainingSeconds = null;
+    hasWon = false;
 };
 
 const handleWin = () => {
@@ -124,19 +130,20 @@ const handleClickItem = (item, grid) => {
         setTimeout(() => {
             elem1.textContent = "#";
             elem2.textContent = "#";
-        }, 1000);
+        }, 750);
         return;
     }
     elem1.style.pointerEvents = "none";
     elem2.style.pointerEvents = "none";
     remainingItems -= 2;
+
     if (remainingItems == 0) {
+        hasWon = true;
         handleWin();
     }
 };
 
 const drawGrid = (grid, n_rows, n_cols) => {
-    console.log(grid);
     const gridElem = document.getElementById("grid");
     gridElem.innerHTML = "";
     gridElem.style.gridTemplateRows = `repeat(${n_rows}, 1fr)`;
@@ -153,6 +160,31 @@ const drawGrid = (grid, n_rows, n_cols) => {
         });
         gridElem.appendChild(item);
     });
+};
+const handleLose = () => {
+    const audio = new Audio("audio/lose_sound_effect.mp3");
+    audio.play();
+    alert("Game Over. You lost");
+};
+
+const handleTimeLimit = () => {
+    document.getElementById("remaining_time").innerText =
+        `Time Remaining: ${remainingSeconds}s`;
+
+    let timeLimitInterval = setInterval(() => {
+        remainingSeconds--;
+        document.getElementById("remaining_time").innerText =
+            `Time Remaining: ${remainingSeconds}s`;
+        if (hasWon) {
+            clearInterval(timeLimitInterval);
+            return;
+        }
+        if (remainingSeconds == 0) {
+            handleLose();
+            clearInterval(timeLimitInterval);
+            return;
+        }
+    }, 1000);
 };
 
 document.querySelector("form").addEventListener("submit", function(event) {
@@ -172,4 +204,6 @@ document.querySelector("form").addEventListener("submit", function(event) {
     remainingItems = gridSize;
     let grid = buildGrid(n_rows, n_cols);
     drawGrid(grid, n_rows, n_cols);
+    remainingSeconds = document.getElementById("time_limit").value;
+    handleTimeLimit();
 });

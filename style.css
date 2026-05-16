@@ -37,12 +37,17 @@ h1 {
     margin-bottom: 50px;
 }
 
-h3 {
+#grid_settings {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
     /* border: 2px solid black; */
+}
+
+#remaining_time {
+    display: flex;
+    justify-content: center;
 }
 
 #grid {
