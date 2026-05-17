@@ -27,7 +27,7 @@ This is a purely front-end project built entirely with HTML, CSS, and Vanilla Ja
    ```
 2. Navigate into the project folder:
    ```bash
-   cd Memory-Scramble-Game
+   cd Scrumble-Game-Test-your-memory
    ```
 3. Double-click the `index.html` file to open it directly in your default web browser (or right-click and select "Open With" your preferred browser).
 4. Set your desired grid size and time limit in the sidebar.
