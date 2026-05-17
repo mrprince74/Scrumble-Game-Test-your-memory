@@ -23,7 +23,7 @@ This is a purely front-end project built entirely with HTML, CSS, and Vanilla Ja
 
 1. Clone this repository to your local machine:
    ```bash
-   git clone https://github.com/mrprince74/Memory-Scramble-Game.git
+   git clone https://github.com/mrprince74/Scrumble-Game-Test-your-memory
    ```
 2. Navigate into the project folder:
    ```bash
